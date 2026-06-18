@@ -286,16 +286,3 @@ systemctl status smb
 ✅ Package Verified Successfully 🚀
 
 ---
-
-## 📂 GitHub Repository Structure
-
-```text
-Linux/
-└── Task-07-Install-Samba/
-    ├── README.md
-    └── screenshots/
-        ├── samba-install-stapp01.png
-        ├── samba-install-stapp02.png
-        ├── samba-install-stapp03.png
-        └── package-verification.png
-```
