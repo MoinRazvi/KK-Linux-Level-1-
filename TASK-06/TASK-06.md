@@ -436,3 +436,213 @@ id_rsa.pub         → 644
 ✅ Task Completed Successfully 🚀
 
 ---
+
+This is because of the **difference between an absolute path and your home directory**.
+
+You created:
+
+```bash
+/ecommerce
+```
+
+Notice the **leading slash `/`**.
+
+This means:
+
+```text
+/ecommerce
+```
+
+is created directly under the **root filesystem**, NOT inside:
+
+```text
+/home/steve
+```
+
+---
+
+## Check Your Current Directory
+
+Run:
+
+```bash
+pwd
+```
+
+If you are logged in as steve, you will see:
+
+```text
+/home/steve
+```
+
+Now list files:
+
+```bash
+ls
+```
+
+You won't see `/ecommerce` because it is **not inside your home directory**.
+
+---
+
+## How to View `/ecommerce`
+
+Run:
+
+```bash
+cd /
+ls
+```
+
+You should see:
+
+```text
+bin
+boot
+dev
+ecommerce
+etc
+home
+opt
+tmp
+usr
+var
+```
+
+Or directly:
+
+```bash
+ls -ld /ecommerce
+```
+
+---
+
+## Verify PHP Files Were Copied
+
+### Method 1 - List all copied PHP files
+
+```bash
+find /ecommerce -type f -name "*.php"
+```
+
+Example:
+
+```text
+/ecommerce/var/www/html/ecommerce/index.php
+/ecommerce/var/www/html/ecommerce/admin/config.php
+/ecommerce/var/www/html/ecommerce/modules/cart/cart.php
+```
+
+---
+
+### Method 2 - Count files
+
+Source:
+
+```bash
+find /var/www/html/ecommerce -type f -name "*.php" | wc -l
+```
+
+Destination:
+
+```bash
+find /ecommerce -type f -name "*.php" | wc -l
+```
+
+Both counts should be the same.
+
+Example:
+
+```text
+5
+5
+```
+
+---
+
+### Method 3 - View Directory Tree
+
+If `tree` is installed:
+
+```bash
+tree /ecommerce
+```
+
+Otherwise:
+
+```bash
+find /ecommerce
+```
+
+---
+
+## Important: Which Command Did You Use?
+
+If you used:
+
+```bash
+find /var/www/html/ecommerce -type f -name "*.php" -exec cp --parents {} / \;
+```
+
+then files are copied like:
+
+```text
+/var/www/html/ecommerce/index.php
+```
+
+to:
+
+```text
+/var/www/html/ecommerce/index.php
+```
+
+which is **not what the task asks**.
+
+---
+
+## Correct KodeKloud Command
+
+```bash
+sudo mkdir -p /ecommerce
+
+cd /var/www/html
+
+find ecommerce -type f -name "*.php" -exec cp --parents {} /ecommerce \;
+```
+
+This creates:
+
+```text
+/ecommerce/ecommerce/index.php
+/ecommerce/ecommerce/admin/config.php
+/ecommerce/ecommerce/modules/cart/cart.php
+```
+
+---
+
+## Quick Verification Command
+
+Run this:
+
+```bash
+find /ecommerce -type f | head
+```
+
+and:
+
+```bash
+find /ecommerce -type f -name "*.php" | wc -l
+```
+
+If files appear, the task is completed successfully.
+
+---
+
+### Small Linux Tip 💡
+
+* `/ecommerce` → Directory under root (`/`)
+* `ecommerce` → Directory under your current location
+* `~/ecommerce` → `/home/steve/ecommerce`
+* `/home/steve/ecommerce` → Explicit path inside steve's home
+
+This distinction between **absolute paths (`/`)** and **relative paths** is a very common Linux interview question.
